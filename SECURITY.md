@@ -1,9 +1,9 @@
-# Security reporting for this unofficial fork
+# گزارش امنیتی این نسخه غیررسمی
 
-Scope includes launcher/RSS, exposed Android components, ADB tools and workflows. Do not post credentials, device identifiers or exploit details in public issues.
+دامنه بررسی شامل لانچر و RSS، مؤلفه‌های اندروید، ابزارهای ADB و گردش‌کارهای ساخت است. رمز، شناسه دستگاه یا جزئیات بهره‌برداری را در Issue عمومی منتشر نکنید.
 
-Check this repository's Security tab for private vulnerability reporting. If it is unavailable, do not send private reports to the upstream maintainer on behalf of this fork; the fork owner must establish a private contact before requesting sensitive details. No response-time guarantee is made.
+برای گزارش خصوصی، بخش Security همین مخزن را بررسی کنید. اگر گزارش خصوصی فعال نیست، نگهدارنده باید راه ارتباطی خصوصی مشخص کند؛ اطلاعات حساس نسخه سفارشی را به‌جای او برای توسعه‌دهنده upstream نفرستید. زمان پاسخ مشخصی تضمین نشده است.
 
-RSS intentionally uses HTTPS network access. Unintended requests, XML parser abuse, private data disclosure and permission misuse are in scope. Turn off ADB/debugging and revoke authorization after installation. No public Stable APK or signing key exists yet. See docs/PRIVACY_AND_RSS.md and docs/SIGNING.md.
+شبکه HTTPS برای RSS عمدی است. درخواست ناخواسته، سوءاستفاده از XML، افشای داده و استفاده نادرست از مجوزها در دامنه‌اند. پس از نصب، debugging را خاموش و اعتمادهای ADB را لغو کنید. نسخه پایدار یا کلید امضای عمومی پایدار هنوز وجود ندارد. [حریم خصوصی](docs/PRIVACY_AND_RSS.md) و [امضا](docs/SIGNING.md) را بخوانید.
 
-Upstream project: https://github.com/Gathin23/cleanyourtv. Report an upstream-only issue there only after establishing that it affects upstream.
+[پروژه اصلی](https://github.com/Gathin23/cleanyourtv) جداست؛ فقط پس از اطمینان از تأثیر مسئله روی آن، گزارش مرتبط را آنجا مطرح کنید.

@@ -1,11 +1,30 @@
-# Stable release signing (not configured yet)
+# امضای APK و نسخه پایدار
 
-`assembleRelease` no longer falls back to a debug certificate. Without all four environment variables below it produces an unsigned APK, which cannot be installed directly. For local tests use `assembleDebug` and never label its APK Stable.
+فایل آماده فعلی امضای **موقت Debug** دارد و برای آزمایش جداگانه منتشر شده است. نسخه پایدار هنوز کلید اختصاصی ندارد. `assembleRelease` بدون چهار متغیر زیر خروجی unsigned می‌سازد؛ این خروجی نصب مستقیم ندارد.
 
-1. The maintainer creates a dedicated key using JDK `keytool -genkeypair`, with an absolute keystore path outside the checkout. Enter passwords interactively; do not put them in command history, docs or Git. Keep encrypted offline backups. No key has been generated in this publication task.
-2. Provide `CTV_KEYSTORE` (absolute path), `CTV_STORE_PASSWORD`, `CTV_KEY_ALIAS`, `CTV_KEY_PASSWORD` through a private local environment or protected secret manager. Do not echo them. Run `./gradlew --no-daemon assembleRelease` in launcher/. A partially configured environment remains unsigned.
-3. Verify `apksigner verify --verbose --print-certs app/build/outputs/apk/release/app-release.apk` using build tools 34.0.0 and publish its SHA-256 with the certificate fingerprint when eventually released.
-4. Test a clean install, then an update from a prior candidate signed with the same key and a higher versionCode, with favorites/news settings preserved. Current package ID remains `com.gathin.tvhome`; a different existing certificate blocks updates. Never promise seamless migration from the Mac debug build.
-5. Test restoring the recorded stock Home before testing failure recovery. APK downgrades may be refused; reverting to stock Home is separate from downgrading the APK. Record a supported data-migration/rollback procedure before Stable.
+| متغیر محیطی | مقدار مورد نیاز |
+|---|---|
+| `CTV_KEYSTORE` | مسیر مطلق فایل کلید خارج از مخزن |
+| `CTV_STORE_PASSWORD` | رمز مخزن کلید |
+| `CTV_KEY_ALIAS` | نام کلید |
+| `CTV_KEY_PASSWORD` | رمز کلید |
 
-There is no release-publishing workflow. Adding one later requires protected manual approval and must never expose the keystore in logs/artifacts. The upstream versionCode 7/versionName 2.6 are inherited, not a declared stable fork version; choose an appropriate higher code before public binary release.
+نگهدارنده باید کلید مستقل را با ابزار JDK یعنی `keytool -genkeypair` ایجاد کند، رمزها را تعاملی وارد و نسخه پشتیبان رمزگذاری‌شده آفلاین نگهداری کند. رمز را در دستور، تاریخچه ترمینال، مستندات یا Git نگذارید. با از دست رفتن کلید، آپدیت سازگار ممکن است ناممکن شود.
+
+پس از ارائه خصوصی هر چهار متغیر، داخل `launcher` اجرا کنید:
+
+```sh
+./gradlew --no-daemon assembleRelease
+```
+
+با ابزار ساخت 34.0.0 امضا را بررسی کنید:
+
+```sh
+apksigner verify --verbose --print-certs app/build/outputs/apk/release/app-release.apk
+```
+
+پیش از انتشار پایدار، نصب تمیز و آپدیت از نسخه‌ای با همان کلید و `versionCode` پایین‌تر را با حفظ تنظیمات تست کنید. شناسه معمولی `com.gathin.tvhome` است؛ شناسه Preview جداست. امضای متفاوت می‌تواند آپدیت را مسدود کند؛ انتقال بدون مشکل از نسخه مک یا Preview را وعده ندهید.
+
+بازگشت به Home کارخانه با نصب APK قدیمی یکی نیست؛ اندروید ممکن است کاهش نسخه را رد کند. روش بازیابی و رفتار داده‌ها باید روی دستگاه واقعی ثبت شوند. شماره‌های ۷ و ۲٫۶ فعلی از upstream آمده‌اند و اعلام نسخه پایدار این پروژه نیستند.
+
+گردش‌کار انتشار فعلی فقط Preview آزمایشی را با اجرای دستی می‌سازد. انتشار پایدار باید کلید محافظت‌شده و کنترل تأیید مستقل داشته باشد؛ کلید و رمز نباید در خروجی یا فایل‌های عمومی CI دیده شوند.

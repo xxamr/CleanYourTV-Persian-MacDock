@@ -1,46 +1,69 @@
-# Build از سورس
+# ساخت از سورس در مک، لینوکس و ویندوز
 
 ## نیازمندی‌ها
 
-- JDK **17** (نه Java 18 برای این پروژه)
-- Android SDK Platform **34** و Build Tools **34.0.0**
-- Android SDK Platform Tools (`adb`)
-- Git و اتصال اینترنت برای دریافت وابستگی‌های Gradle
-- macOS / Linux / Windows (برای Windows از `gradlew.bat` استفاده کنید)
+- JDK 17.
+- Android SDK با سکوی API 34 و ابزار ساخت 34.0.0.
+- ابزارهای خط فرمان Android SDK و دسترسی به مخازن Gradle، Google Maven و Maven Central.
+- ابزار `adb` فقط برای نصب و آزمایش روی دستگاه.
 
-## ساخت
+پروژه از Gradle Wrapper نسخه 8.9 با هش مشخص‌شده در فایل تنظیمات استفاده می‌کند. SDK داخل مخزن قرار ندارد. مسیرهای نمونه را با مسیر واقعی سیستم خودتان جایگزین کنید. فایل `local.properties` و کلید امضا را وارد Git نکنید.
 
-```bash
+## مک و لینوکس
+
+```sh
 export JAVA_HOME=/absolute/path/to/jdk17
-export ANDROID_HOME=/absolute/path/to/Android/sdk
-export ANDROID_SDK_ROOT="$ANDROID_HOME"
-
+export ANDROID_HOME=/absolute/path/to/android-sdk
+export PATH="$JAVA_HOME/bin:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH"
+sdkmanager 'platforms;android-34' 'build-tools;34.0.0' 'platform-tools'
 cd launcher
-printf 'sdk.dir=%s\n' "$ANDROID_HOME" > local.properties
-./gradlew clean assembleDebug --no-daemon --console=plain
+chmod +x gradlew
+./gradlew --no-daemon testPreviewUnitTest lintPreview assemblePreview
 ```
 
-مسیر APK: `launcher/app/build/outputs/apk/debug/app-debug.apk`.
+خروجی Preview: `launcher/app/build/outputs/apk/preview/app-preview.apk`؛ شناسه آن جداگانه است. [نصب Preview](EXPERIMENTAL_APK.md)
 
-**امضا:** Debug فقط برای تست محلی است. Release به‌صورت پیش‌فرض unsigned است؛ راهنمای [SIGNING](SIGNING.md) را بخوانید.
+برای نسخه معمولی آزمایشی یا خروجی Release:
 
-## نصب آزمایشی روی TV
-
-```bash
-adb connect <TV_IP>:5555
-adb devices -l
-adb install -r launcher/app/build/outputs/apk/debug/app-debug.apk
-adb shell am start -n com.gathin.tvhome/.MainActivity
+```sh
+./gradlew --no-daemon testDebugUnitTest assembleDebug
+./gradlew --no-daemon testReleaseUnitTest lintRelease assembleRelease
 ```
 
-اگر `INSTALL_FAILED_UPDATE_INCOMPATIBLE` مشاهده شد، کلید امضای نسخه موجود و نسخه تازه متفاوت است. **بدون پشتیبان‌گیری، اطلاعات برنامه را حذف نکنید.**
+خروجی Debug معمولی: `launcher/app/build/outputs/apk/debug/app-debug.apk`.
+خروجی Release بدون کلید: `launcher/app/build/outputs/apk/release/app-release-unsigned.apk`؛ این فایل مستقیماً نصب نمی‌شود. [امضای انتشار](SIGNING.md)
 
-## CI
+## ویندوز با PowerShell
 
-Workflow `Build verification` در `.github/workflows/build.yml` فقط صحت ساخت و تست‌های پروژه را بررسی می‌کند. خروجی CI برای نصب عمومی منتشر نمی‌شود، و Release بدون متغیرهای خصوصی امضا نمی‌شود. پس از تعریف امن Release signing می‌توان مرحله انتشار را اضافه کرد.
+پس از نصب JDK و ابزارهای Android، مسیر واقعی را قرار دهید:
 
-## درباره macOS Catalina
+```powershell
+$env:JAVA_HOME = 'C:\Java\jdk-17'
+$env:ANDROID_HOME = 'C:\Android\sdk'
+$env:Path = "$env:JAVA_HOME\bin;$env:ANDROID_HOME\cmdline-tools\latest\bin;$env:ANDROID_HOME\platform-tools;$env:Path"
+sdkmanager.bat 'platforms;android-34' 'build-tools;34.0.0' 'platform-tools'
+cd launcher
+.\gradlew.bat --no-daemon testPreviewUnitTest lintPreview assemblePreview
+.\gradlew.bat --no-daemon testReleaseUnitTest lintRelease assembleRelease
+```
 
-Homebrew ممکن است از macOS قدیمی پشتیبانی نکند. می‌توان Android SDK Command-line Tools و JDK 17 را به‌صورت دستی نصب کرد. مقدارهای `JAVA_HOME` و `ANDROID_HOME` برای هر سیستم باید با مسیر واقعی همان سیستم جایگزین شوند؛ مسیر کامپیوتر توسعه‌دهنده نباید داخل مخزن ذخیره شود.
+اگر پذیرش مجوزهای SDK درخواست شد، با `sdkmanager --licenses` متن را بخوانید و خودتان تصمیم بگیرید.
 
-برای دستورهای کامل Windows PowerShell و جزئیات سازگاری Catalina، [BUILD_EN](BUILD_EN.md) را ببینید. دستورات نصب را از ریشه مخزن اجرا کنید؛ اگر داخل launcher هستید ابتدا به پوشه والد برگردید. installer قدیمی upstream به مسیر Release امضاشده متکی است؛ در این پیش‌نمایش از روش دستی Debug و ADB استفاده کنید.
+## نکته درباره macOS Catalina
+
+Homebrew برای این سیستم قدیمی ممکن است قابل استفاده نباشد. نصب دستی JDK و ابزار خط فرمان SDK ممکن است؛ نسخه‌ای انتخاب کنید که سازنده صریحاً از macOS 10.15 پشتیبانی کند. سازگاری ابزارهای جدید با Catalina در این کار آزمایش نشده است. صرف وجود JDK 17، سازگاری تمام نصب‌کننده‌های فعلی را تضمین نمی‌کند.
+
+## نصب محلی
+
+از ریشه مخزن اجرا کنید؛ اگر داخل `launcher` هستید ابتدا یک پوشه بالا بیایید:
+
+```sh
+adb install -r launcher/app/build/outputs/apk/preview/app-preview.apk
+adb shell am start -n com.gathin.tvhome.preview/com.gathin.tvhome.MainActivity
+```
+
+اسکریپت‌های قدیمی `build-and-install` پروژه اصلی مسیر و امضای Release قدیمی را فرض می‌کنند؛ برای این پیش‌نمایش از نصب دستی بالا استفاده کنید.
+
+## ساخت خودکار در GitHub
+
+فایل `build.yml` آزمون JVM، lint و ساخت Release را بررسی می‌کند و باینری منتشر نمی‌کند. فایل `preview-apk.yml` فقط با اجرای دستی روی شاخه اصلی همین مخزن، Preview را آزمایش، امضا را بررسی و به‌صورت انتشار آزمایشی منتشر می‌کند. کلید Debug آن موقت است و برای آپدیت عمومی پایدار مناسب نیست. [نتایج بررسی](VERIFICATION.md)

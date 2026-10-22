@@ -1,85 +1,74 @@
-# CleanYourTV Persian MacDock (Community Edition)
+# لانچر فارسی CleanYourTV
 
-**A Persian-friendly, macOS-inspired Android TV home screen, built on [CleanYourTV](https://github.com/Gathin23/cleanyourtv).**  
-**لانچر فارسی با Dock شناور، Launchpad، تاریخ شمسی و تلکس خبری برای Android TV**
+**راهنمای قدم‌به‌قدم:** [نصب با مک](docs/INSTALL_MAC.md) · [نصب با ویندوز](docs/INSTALL_WINDOWS.md)
 
-> **Community modification, not the official CleanYourTV project and not affiliated with Apple, Google, YouTube, Instagram, or any news publisher.**  
-> نسخه سفارشی و مستقل از توسعه‌دهنده اصلی CleanYourTV است. هیچ ارتباط رسمی با Apple یا سرویس‌های نام‌برده ندارد.
+صفحه اصلی سفارشی برای Android TV با تاریخ شمسی، نوار برنامه‌های شبیه macOS، فهرست تمام‌صفحه برنامه‌ها و تلکس خبری فارسی.
 
-## Status / وضعیت انتشار
+این پروژه نسخه مستقل و غیررسمی از [CleanYourTV](https://github.com/Gathin23/cleanyourtv) است و وابستگی رسمی به سازنده اصلی، Apple، Google یا منابع خبری ندارد. این برنامه **لانچر است، نه سیستم‌عامل یا رام**؛ برای نصب آن به روت یا فلش دستگاه نیازی نیست.
 
-**Experimental channel available; no Stable Release.** See [experimental APK installation and signing limits](docs/EXPERIMENTAL_APK.md) and the [Releases page](https://github.com/xxamr/CleanYourTV-Persian-MacDock/releases). The original source-preview release has no APK. The attached source snapshot is authoritative; no APK was included, so APK/source correspondence cannot be verified. Local Android build was blocked by network access to Gradle; see [verification](docs/VERIFICATION.md). Device behavior remains unverified in this publication session. Prior Mi Box 4 use is owner-reported, not a test of this exact published commit.
+## دانلود و نصب
 
-**APK آزمایشی از بخش Releases؛ نسخه Stable موجود نیست.** نصب، آپدیت و بازگشت این commit روی TV هنوز تأیید نشده است.
+**[دانلود APK آزمایشی — حدود ۱٫۹۴ مگابایت](https://github.com/xxamr/CleanYourTV-Persian-MacDock/releases/download/experimental-27e5fec-1-1/CleanYourTV-experimental.apk)**
 
-## Features / امکانات
+[صفحه انتشار و مشخصات فایل](https://github.com/xxamr/CleanYourTV-Persian-MacDock/releases/tag/experimental-27e5fec-1-1) · [راهنمای نصب نسخه آزمایشی](docs/EXPERIMENTAL_APK.md)
 
-- **Persian Jalali date / تاریخ شمسی فارسی** with Persian day/month names and Persian digits.
-- **12-hour clock (AM/PM on an English system locale)** on Home and a large, drifting clock screensaver with Persian date.
-- **Floating dock** centered near the bottom of the screen, roughly 60% of screen width.
-- **Remote-controlled macOS-inspired magnification:** focused app scales up, neighbors scale progressively; scales collapse after several seconds of inactivity. Uses the apps' original icons.
-- **Editable favorites on TV:** choose/reorder apps using the remote. No Mac/ADB needed after setup.
-- **Fullscreen Launchpad:** browse all installed TV apps using directional buttons and Back.
-- **Persian RSS news ticker:** source/topic selection, on/off toggle, configurable by remote, refresh attempted every five minutes while Home is active; left/right to switch items, OK to open the source article in a browser.
-- **Small native Android launcher** that does not require root. Its performance depends on your TV, network and installed apps.
+نسخه آماده با نام **CleanYourTV Preview** و شناسه `com.gathin.tvhome.preview` کنار لانچر قبلی نصب می‌شود. تنظیمات آن جداست. امضای این فایل از نوع Debug و موقت است؛ نصب نسخه‌های بعدی روی آن تضمین نمی‌شود. نسخه پایدار هنوز منتشر نشده است.
 
-## Before / after — قبل و بعد
+۱. فایل APK را دانلود کنید.
+۲. مطابق [راهنمای نصب](docs/EXPERIMENTAL_APK.md)، اتصال ADB را برقرار و برنامه را نصب کنید.
+۳. ابتدا برنامه را از صفحه اصلی فعلی باز کنید و عملکرد ریموت را بسنجید.
+۴. فقط پس از اطمینان، آن را در تنظیمات دستگاه به‌عنوان برنامه پیش‌فرض Home انتخاب کنید.
 
-| Before: stock Android TV reference | After: Persian MacDock on the owner's Mi Box |
+**لانچر اصلی دستگاه را حذف یا غیرفعال نکنید.** پیش از تغییر Home، نام برنامه و مؤلفه فعلی آن را ثبت کنید تا بتوانید برگردید.
+
+حداقل نسخه تعیین‌شده در سورس، Android 8 یا API 26 است. استفاده قبلی روی Mi Box 4 با Android 9 توسط مالک گزارش شده؛ نصب، به‌روزرسانی و بازیابی APK آزمایشی روی دستگاه واقعی هنوز تأیید نشده است. بعضی Firmwareها تغییر Home را محدود می‌کنند.
+
+## امکانات
+
+- تاریخ شمسی با نام روز و ماه و ارقام فارسی.
+- ساعت ۱۲ساعته و ساعت تمام‌صفحه با جابه‌جایی آرام؛ زبان ارقام و AM/PM به تنظیمات زبان اندروید بستگی دارد.
+- نوار برنامه‌ها یا Dock با عرض حدود ۶۰٪ صفحه، آیکون اصلی برنامه‌ها و بزرگ‌نمایی آیکون انتخاب‌شده و همسایه‌ها.
+- بازگشت بزرگ‌نمایی به حالت عادی پس از حدود ۳ ثانیه بی‌حرکتی.
+- افزودن، حذف و مرتب‌کردن برنامه‌های دلخواه از روی تلویزیون با ریموت.
+- فهرست تمام‌صفحه برنامه‌ها یا Launchpad.
+- تلکس RSS فارسی با انتخاب منبع و موضوع، روشن/خاموش، تازه‌سازی دستی و کنترل خبر با ریموت.
+- تلاش برای دریافت خبر هر پنج دقیقه، زمانی که صفحه اصلی فعال و تلکس روشن است؛ دریافت خبر تازه یا دسترسی همیشگی به منابع تضمین نمی‌شود.
+
+این امکانات در کد وجود دارند؛ عملکرد و سرعت آن‌ها روی همه دستگاه‌ها آزمایش نشده است.
+
+## قبل و بعد
+
+| نمونه صفحه اصلی پیش‌فرض Android TV | صفحه اصلی سفارشی روی باکس مالک |
 |---|---|
-| ![Stock Android TV Home reference supplied by the owner](docs/screenshots/stock-home-reference.webp) | ![Owner photograph of the custom Persian MacDock Home with RSS ticker](docs/screenshots/custom-home-owner.jpg) |
+| ![نمونه صفحه اصلی پیش‌فرض](docs/screenshots/stock-home-reference.webp) | ![صفحه اصلی سفارشی با تاریخ شمسی، Dock و تلکس](docs/screenshots/custom-home-owner.jpg) |
 
-**قبل:** نمونه Home پیش‌فرض Android TV · **بعد:** عکس واقعی Home سفارشی روی باکس مالک، با تاریخ شمسی، Dock و تلکس خبری.
+تصویر اول نمونه مرجع روی تلویزیون دیگری است. تصویر دوم عکس واقعی صفحه اصلی سفارشی روی باکس مالک است. این مقایسه، آزمون کنترل‌شده یک دستگاه و Firmware نیست و عکس دوم نیز نصب APK آزمایشی CI را اثبات نمی‌کند. تصاویر بدون بازسازی یا تولید مصنوعی منتشر شده‌اند. [توضیح تصاویر](docs/SCREENSHOTS.md)
 
-Both images were supplied by the owner. The stock image is a reference photographed on a different television; this is a visual comparison, not a controlled same-device/firmware benchmark. The custom photo is not proof that the separately signed CI preview APK was installed. No UI reconstruction or generated mockup was used. [Image provenance](docs/SCREENSHOTS.md)
+## راهنماها
 
-## Install / نصب آسان
-
-**[Download experimental APK / دانلود APK آزمایشی (1.94 MB)](https://github.com/xxamr/CleanYourTV-Persian-MacDock/releases/download/experimental-27e5fec-1-1/CleanYourTV-experimental.apk)** · [Checksums and build information](https://github.com/xxamr/CleanYourTV-Persian-MacDock/releases/tag/experimental-27e5fec-1-1)
-
-This APK installs as **CleanYourTV Preview** alongside the original launcher. Temporary debug signing; no seamless update or physical-TV validation claim. Use the [preview installation guide](docs/EXPERIMENTAL_APK.md), which has the correct package/activity commands.
-
-**Experimental APK:** read [EXPERIMENTAL_APK](docs/EXPERIMENTAL_APK.md) first; its separate package and temporary signing have different commands and update limits.
-
-**Future Stable installation:** open [Releases](https://github.com/xxamr/CleanYourTV-Persian-MacDock/releases), download a **verified, properly signed APK** if available, and follow [راهنمای نصب فارسی](docs/INSTALL_FA.md). **If no release is published yet, build from source** using [BUILD_FA](docs/BUILD_FA.md).
-
-**پیش از نصب:** از تنظیمات و لانچر فعلی پشتیبان بگیرید. لانچر سیستمی را حذف نکنید. روی همه برندها و مدل‌ها تست نشده است.
-
-**Compatibility:** Source project specifies Android **8.0+ (API 26+)**; owner reports prior use on Xiaomi Mi Box 4 / Android TV 9; this exact commit has not been device-tested. Other firmware can prevent changing the default Home, even when the command returns `Success`.
-
-## Documentation / مستندات
-
-| راهنما | توضیح |
+| موضوع | راهنما |
 |---|---|
-| [INSTALL_FA](docs/INSTALL_FA.md) | نصب APK، اتصال ADB و تغییر Home با روش بازگشت |
-| [USER_GUIDE_FA](docs/USER_GUIDE_FA.md) | کنترل Dock، Launchpad، ساعت و تلکس خبری |
-| [BUILD_FA](docs/BUILD_FA.md) | Build از سورس با Java 17 و Android SDK |
-| [TROUBLESHOOTING_FA](docs/TROUBLESHOOTING_FA.md) | اشکال‌های رایج، کرش و بازیابی Home |
-| [PRIVACY_AND_RSS](docs/PRIVACY_AND_RSS.md) | مجوز اینترنت، RSS، منابع خبری و حریم خصوصی |
-| [RELEASE_CHECKLIST](docs/RELEASE_CHECKLIST.md) | کنترل کیفیت و نکات امنیتی پیش از انتشار APK |
-| [CONTRIBUTING](CONTRIBUTING.md) | مشارکت در توسعه |
-| [CREDITS](CREDITS.md) | منبع اصلی، مجوزها و اعتبار توسعه‌دهندگان |
+| شروع سریع و نصب فایل آماده | [نصب نسخه آزمایشی](docs/EXPERIMENTAL_APK.md) |
+| اتصال ADB، انتخاب Home و بازگشت | [نصب و بازیابی](docs/INSTALL_FA.md) |
+| ریموت، برنامه‌های دلخواه، ساعت و اخبار | [راهنمای استفاده](docs/USER_GUIDE_FA.md) |
+| ساخت روی مک، ویندوز و لینوکس | [ساخت از سورس](docs/BUILD_FA.md) |
+| اتصال ناموفق، خطا و صفحه سیاه | [رفع اشکال](docs/TROUBLESHOOTING_FA.md) |
+| مجوزها، داده‌ها و محدودیت اخبار | [حریم خصوصی و RSS](docs/PRIVACY_AND_RSS.md) |
+| کلید امضا و انتشار قابل به‌روزرسانی | [امضای نسخه انتشار](docs/SIGNING.md) |
+| کنترل کیفیت پیش از انتشار | [فهرست کنترل انتشار](docs/RELEASE_CHECKLIST.md) |
+| نتیجه آزمون‌ها و محدودیت‌های تأیید | [گزارش بررسی](docs/VERIFICATION.md) |
+| منشأ سورس و تاریخچه پروژه اصلی | [نسبت با پروژه اصلی](docs/UPSTREAM.md) |
+| همکاری در توسعه | [مشارکت](CONTRIBUTING.md) |
+| مجوزها و نام پدیدآورندگان | [اعتبارها و مجوزها](CREDITS.md) |
 
-## Quick developer build
+[فهرست مستندات](docs/README.md) · [تغییرات](CHANGELOG.md) · [گزارش امنیتی](SECURITY.md) · [دستورالعمل عامل‌های برنامه‌نویسی](AGENTS.md)
 
-```bash
-# Requirements: Java 17, Android SDK API 34 and Build Tools 34.0.0
-cd launcher
-printf 'sdk.dir=%s\n' "$ANDROID_HOME" > local.properties
-./gradlew testDebugUnitTest assembleDebug --no-daemon
-# Local test only: launcher/app/build/outputs/apk/debug/app-debug.apk
-```
+## وضعیت ساخت و انتشار
 
-**Signing:** This fork removes upstream debug signing from Release. `assembleRelease` is unsigned unless all four private signing environment variables are supplied. Debug builds are local test builds. See [SIGNING](docs/SIGNING.md) and [RELEASE_CHECKLIST](docs/RELEASE_CHECKLIST.md).
+ساخت اندروید با Java 17، سکوی API 34 و ابزار ساخت 34.0.0 در GitHub Actions موفق بوده است. نسخه آزمایشی پس از آزمون‌های JVM، بررسی lint، بررسی شناسه برنامه و تأیید امضای APK منتشر شده است. [اجرای ساخت APK](https://github.com/xxamr/CleanYourTV-Persian-MacDock/actions/runs/39853484103)
 
-English: [Build](docs/BUILD_EN.md) · [Controls](docs/USER_GUIDE_EN.md) · [Verification](docs/VERIFICATION.md) · [Upstream](docs/UPSTREAM.md).
+این موفقیت به معنی تأیید نصب یا آپدیت روی تلویزیون واقعی نیست. خروجی `assembleRelease` بدون تنظیمات خصوصی امضا، unsigned است و مستقیماً نصب نمی‌شود. فایل‌های Debug برای آزمایش‌اند؛ هیچ‌کدام را نسخه پایدار تلقی نکنید.
 
-## Copyright & attribution
+## مجوز و منشأ
 
-Based on **CleanYourTV**, © 2026 Gathin and contributors, licensed under **MIT**. Retain the upstream `LICENSE` and the Outfit font's `launcher/FONT-LICENSE-OFL.txt` (SIL OFL 1.1). All modifications must retain the applicable notices. See [CREDITS.md](CREDITS.md).
-
----
-
-**English quick start:** [INSTALL_EN](docs/INSTALL_EN.md) · **فارسی:** [INSTALL_FA](docs/INSTALL_FA.md)
-
-Agent guidance: [AGENTS.md](AGENTS.md). Inherited device lists and historical docs are described in [UPSTREAM](docs/UPSTREAM.md).
+بر پایه CleanYourTV، © ۲۰۲۶ Gathin و مشارکت‌کنندگان، تحت مجوز [MIT](LICENSE). فونت Outfit تحت [مجوز SIL OFL 1.1](launcher/FONT-LICENSE-OFL.txt) است. متن حقوقی اصلی این مجوزها حفظ شده است. مستندات تاریخی و فهرست دستگاه‌های پروژه اصلی، تأیید سازگاری نسخه سفارشی نیستند.

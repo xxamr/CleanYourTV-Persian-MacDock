@@ -1,12 +1,15 @@
-# Changelog
+# تاریخچه تغییرات
 
-## Unreleased — community edition
+## نسخه سفارشی و انتشار آزمایشی
 
-- Persian Shamsi day/month/date presentation and 12-hour time (locale-dependent display).
-- Persian date in drifting screensaver, with direct Clock shortcut.
-- Floating macOS-inspired dock with per-icon magnification, neighbor scaling and idle collapse.
-- On-TV Dock favorites selection/reordering and fullscreen Launchpad.
-- Interactive RSS ticker, source/topic selection, on/off toggle, cached items and article links.
-- Accessibility and D-pad navigation enhancements.
+- تاریخ شمسی فارسی و ساعت ۱۲ساعته با نمایش وابسته به زبان اندروید.
+- ساعت تمام‌صفحه و میان‌بر ساعت.
+- Dock با بزرگ‌نمایی آیکون‌ها و جمع‌شدن پس از بی‌حرکتی.
+- ویرایش برنامه‌های دلخواه با ریموت و Launchpad تمام‌صفحه.
+- تلکس RSS با منبع، موضوع، خاموش/روشن، کش خبر و لینک مقاله.
+- اصلاح دکمه‌های Clock و اخبار در چیدمان عبری.
+- Release بدون امضای پیش‌فرض Debug و Preview با شناسه جدا.
+- انتشار APK آزمایشی همراه هش و مشخصات ساخت.
+- راهنماهای فارسی و تصاویر مرجع قبل و عکس واقعی بعد.
 
-**Release version and verified devices:** to be assigned after build, signing and acceptance testing. Do not describe this as an official upstream release.
+نسخه پایدار و فهرست دستگاه‌های تأییدشده پس از آزمون نصب، آپدیت و بازگشت تعیین می‌شوند. این انتشار، نسخه رسمی upstream نیست.

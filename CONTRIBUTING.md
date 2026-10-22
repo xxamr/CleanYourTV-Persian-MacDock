@@ -1,13 +1,11 @@
-# Contributing / مشارکت
+# مشارکت در توسعه
 
-Contributions welcome for Android TV compatibility, accessibility, Persian localization, ticker robustness and D-pad usability.
+مشارکت در سازگاری Android TV، دسترس‌پذیری، فارسی‌سازی، پایداری اخبار و کار با ریموت پذیرفته می‌شود.
 
-1. Open an Issue with Android TV version, device model, reproducible steps and logs with identifying information removed.
-2. Work from a feature branch; keep changes focused and include testing notes.
-3. Build with **Java 17 / Android SDK API 34**, run the project's available JVM tests where applicable, and test remote navigation.
-4. Submit a Pull Request describing behavior before/after, screenshots with private information redacted, and licensing/source attribution for assets.
-5. Never commit `.env`, `local.properties`, `*.jks`, keystores, OAuth tokens, account cookies, private IPs or passwords.
+۱. مشکل را در Issues همین مخزن با مدل دستگاه، نسخه اندروید و مراحل تکرار توضیح دهید. اطلاعات شناسایی را از لاگ حذف کنید.
+۲. تغییر را روی شاخه جدا نگه دارید؛ هر درخواست ادغام روی یک موضوع متمرکز باشد.
+۳. مطابق [راهنمای ساخت](docs/BUILD_FA.md) با Java 17 و SDK 34 بسازید و آزمون‌های مرتبط را اجرا کنید.
+۴. نتیجه قبل و بعد، روش آزمون و محدودیت‌های باقی‌مانده را در Pull Request بنویسید. تغییر ظاهری نیاز به عکس واقعی و بدون اطلاعات خصوصی دارد.
+۵. کوکی، توکن، رمز، کلید، مسیر شخصی، IP خصوصی، `local.properties` و `.env` را وارد Git نکنید.
 
-**درخواست امکانات:** هر تغییر ظاهری باید با دستگاه‌های کم‌حافظه و کنترل D-pad نیز بررسی شود. لوگوها و آیکون‌های اپ‌های شخص ثالث را به‌صورت اختصاصی در APK بسته‌بندی نکنید مگر مجوز مناسب داشته باشید.
-
-Coding agents: read [AGENTS.md](AGENTS.md).
+تغییرات ظاهری را با ریموت و دستگاه کم‌حافظه بسنجید. آیکون و دارایی متعلق به دیگران را بدون مجوز به فایل نصب اضافه نکنید. برای مشکلات امنیتی از [روش گزارش امنیتی](SECURITY.md) استفاده کنید. عامل‌های برنامه‌نویسی [AGENTS.md](AGENTS.md) را بخوانند.

@@ -60,20 +60,6 @@ jobs:
         run: |
           set -euo pipefail
           TAG="experimental-${SOURCE_SHA:0:7}-${RUN_NUMBER}-${RUN_ATTEMPT}"
-          {
-            echo "## Experimental APK — NOT Stable"
-            echo
-            echo "**نسخه آزمایشی با امضای موقت CI؛ آپدیت نسخه بعدی تضمین نمی‌شود.**"
-            echo
-            echo "Installs alongside the original launcher as **CleanYourTV Preview** (com.gathin.tvhome.preview). Debuggable and signed with a temporary debug certificate. This is not the Mac build's signing key. No physical-TV install, update or rollback verification has been performed."
-            echo
-            echo "Download CleanYourTV-experimental.apk below. Verify SHA256SUMS.txt and read INSTALL-EXPERIMENTAL.md before installing. Keep the original launcher enabled."
-            echo
-            echo "Source: $SOURCE_SHA"
-            echo "Build, JVM tests, lint, application ID and APK signature verification passed. See BUILD-INFO.txt for certificate fingerprint."
-            echo
-            echo "Unofficial community fork of Gathin23/cleanyourtv. MIT and Outfit OFL notices preserved. Stable requires a dedicated protected signing key and physical-device testing."
-            echo
-            echo "[Installation guide](https://github.com/$REPO/blob/$SOURCE_SHA/docs/EXPERIMENTAL_APK.md)"
-          } > /tmp/preview-release.md
-          gh release create "$TAG" dist/* --repo "$REPO" --target "$SOURCE_SHA" --prerelease --latest=false --title "Experimental APK — ${SOURCE_SHA:0:7}" --notes-file /tmp/preview-release.md
+          sed -e "s/27e5fec2073ea621ff6f32db7760c0d79ea2f207/$SOURCE_SHA/g" -e 's/این ویرایش فقط راهنما را فارسی می‌کند؛ فایل APK عوض نشده است.//g' docs/RELEASE_NOTES_PREVIEW_FA.md > /tmp/preview-release.md
+          printf '\nشناسه سورس این ساخت: `%s`\n' "$SOURCE_SHA" >> /tmp/preview-release.md
+          gh release create "$TAG" dist/* --repo "$REPO" --target "$SOURCE_SHA" --prerelease --latest=false --title "APK آزمایشی — ${SOURCE_SHA:0:7}" --notes-file /tmp/preview-release.md

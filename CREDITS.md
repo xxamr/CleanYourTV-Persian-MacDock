@@ -1,13 +1,9 @@
-# Credits, origin and licenses
+# پدیدآورندگان، منشأ و مجوزها
 
-This work is an **unofficial community customization** of [Gathin23/cleanyourtv](https://github.com/Gathin23/cleanyourtv), originally © 2026 Gathin and contributors.
+این پروژه نسخه سفارشی غیررسمی [CleanYourTV](https://github.com/Gathin23/cleanyourtv)، © ۲۰۲۶ Gathin و مشارکت‌کنندگان است. تاریخچه و نام نویسندگان upstream در Git حفظ شده است.
 
-The upstream source code is distributed under the **MIT License**. Preserve the **full original MIT notice** in the repository's root `LICENSE` and in distributions that include a substantial portion of the source.
+کد اصلی تحت [مجوز MIT](LICENSE) است؛ متن کامل حق‌نشر و مجوز باید در توزیع‌های مشمول حفظ شود. فونت Outfit مجوز جداگانه [SIL OFL 1.1](launcher/FONT-LICENSE-OFL.txt) دارد. این اسناد حقوقی اصلی ترجمه یا جایگزین نشده‌اند.
 
-The bundled **Outfit** typeface is licensed under the **SIL Open Font License 1.1**, see `launcher/FONT-LICENSE-OFL.txt`. This license is distinct from MIT and must be preserved.
+نسخه سفارشی تاریخ فارسی، Dock شناور، ویرایش برنامه‌های دلخواه، Launchpad و تلکس تعاملی را ارائه می‌کند. برخی امکانات ریشه در مشارکت‌های قبلی دارند؛ برای انتساب دقیق هر تغییر، تاریخچه فایل را ببینید. نام و آیکون برنامه‌ها و منابع خبری به معنی همکاری رسمی نیست.
 
-This derivative adds Persian Solar Hijri formatting, a macOS-inspired floating D-pad dock, favorites editing, fullscreen app launcher and an interactive Persian RSS ticker. Some features may be descended from upstream community contributions; inspect `git log` / upstream PR history for correct per-author credit. No affiliation with Apple, Meta, YouTube or the RSS publishers is claimed.
-
-Keep the upstream repository link and copyright notices prominently visible in README and release notes.
-
-Build/runtime dependency notices and upstream history: [docs/UPSTREAM.md](docs/UPSTREAM.md). No APK is distributed in this source preview.
+[جزئیات منشأ و وابستگی‌ها](docs/UPSTREAM.md) · [وضعیت APK و بررسی‌ها](docs/VERIFICATION.md)

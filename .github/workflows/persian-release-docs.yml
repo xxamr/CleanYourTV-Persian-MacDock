@@ -1,0 +1,26 @@
+name: راهنمای فارسی صفحه‌های انتشار
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  docs:
+    if: github.repository == 'xxamr/CleanYourTV-Persian-MacDock' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+      - name: فارسی‌کردن توضیحات و راهنمای همراه؛ بدون تغییر APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          gh release edit experimental-27e5fec-1-1 --title 'APK آزمایشی آماده نصب — 27e5fec' --notes-file docs/RELEASE_NOTES_PREVIEW_FA.md
+          gh release edit v0.1.0-source-preview --title 'پیش‌نمایش سورس نسخه فارسی — ۰٫۱٫۰' --notes-file docs/RELEASE_NOTES_SOURCE_FA.md
+          mkdir -p release-docs
+          cp docs/EXPERIMENTAL_APK.md release-docs/INSTALL-EXPERIMENTAL.md
+          cp LICENSE release-docs/LICENSE.txt
+          cp launcher/FONT-LICENSE-OFL.txt release-docs/FONT-LICENSE-OFL.txt
+          gh release upload experimental-27e5fec-1-1 release-docs/* --clobber

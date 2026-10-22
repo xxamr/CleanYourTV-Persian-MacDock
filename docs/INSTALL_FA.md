@@ -1,57 +1,62 @@
-# نصب CleanYourTV Persian MacDock — فارسی
+# نصب، اتصال ADB و بازیابی Home
 
-این نسخه یک لانچر سفارشی Android TV است. برای نصب نیازی به Root نیست. روش راه‌اندازی Home در Firmwareهای مختلف فرق دارد.
+**راهنمای قدم‌به‌قدم:** [نصب با مک](INSTALL_MAC.md) · [نصب با ویندوز](INSTALL_WINDOWS.md)
 
-## روش ساده: APK منتشرشده
+برای **APK آماده فعلی** از [راهنمای نسخه آزمایشی](EXPERIMENTAL_APK.md) استفاده کنید؛ شناسه و دستور اجرای آن با نسخه معمولی فرق دارد. این صفحه مبانی اتصال و نصب از سورس را توضیح می‌دهد.
 
-1. از بخش **Releases** همین مخزن، یک APK امضاشده و تست‌شده دانلود کنید. اگر هنوز Release قابل‌اعتماد منتشر نشده است، از روش «ساخت از سورس» استفاده کنید.
-2. در Android TV به `Settings → Device Preferences → About` بروید و چند بار روی Build بزنید تا Developer Options فعال شود؛ نام گزینه ممکن است فرق کند.
-3. ADB/USB debugging را روشن کنید. کامپیوتر و TV باید در شبکه قابل دسترس باشند. بعضی دستگاه‌ها USB debugging را فقط از کابل ارائه می‌کنند.
-4. روی کامپیوتر، Android Platform Tools (`adb`) نصب باشد. روی تلویزیون درخواست تأیید Debugging را قبول کنید.
-5. نمونه نصب (IP را با آدرس تلویزیون **خودتان** جایگزین کنید):
+## ۱. آماده‌کردن دستگاه
 
-```bash
+در تنظیمات Android TV به بخش «درباره دستگاه» بروید و چند بار روی شماره ساخت بزنید تا گزینه‌های توسعه‌دهنده فعال شوند. سپس اشکال‌زدایی USB یا شبکه را، در صورت پشتیبانی دستگاه، روشن کنید. نام منوها بسته به سازنده فرق دارد.
+
+روی کامپیوتر Android Platform Tools را از منبع رسمی نصب کنید. باکس و کامپیوتر باید در شبکه قابل دسترس باشند. درخواست اعتماد به کامپیوتر را روی تلویزیون تأیید کنید.
+
+```sh
 adb connect <TV_IP>:5555
 adb devices -l
+```
+
+`<TV_IP>` را با IP باکس خودتان جایگزین کنید؛ آن را عیناً وارد نکنید. وضعیت دستگاه باید `device` باشد. بعضی دستگاه‌ها اتصال شبکه را ارائه نمی‌کنند یا روش جفت‌سازی دیگری دارند؛ در این حالت از روش سازنده استفاده کنید.
+
+## ۲. ثبت Home فعلی
+
+```sh
+adb shell cmd package resolve-activity --brief -a android.intent.action.MAIN -c android.intent.category.HOME
+adb shell cmd package query-activities --brief -a android.intent.action.MAIN -c android.intent.category.HOME
+```
+
+نام بسته و مؤلفه Home اصلی را نگه دارید. Google TV معمولاً از `com.google.android.apps.tv.launcherx` و برخی Android TVها از `com.google.android.tvlauncher` استفاده می‌کنند؛ نام Activity را از خروجی واقعی دستگاه بگیرید.
+
+## ۳. نصب نسخه معمولی ساخته‌شده از سورس
+
+دستورهای زیر مخصوص شناسه معمولی `com.gathin.tvhome` هستند. مسیر APK را با فایل واقعی خودتان جایگزین کنید:
+
+```sh
 adb install -r path/to/app-debug.apk
 adb shell am start -n com.gathin.tvhome/.MainActivity
 ```
 
-`<TV_IP>` یک جای‌نگهدار است؛ آن را عیناً تایپ نکنید. اگر ارتباط Wireless ADB در دستگاه غیرفعال است، مطابق راهنمای سازنده عمل کنید. اگر امضای APK نسخه جدید با قبلی فرق کند، `INSTALL_FAILED_UPDATE_INCOMPATIBLE` رخ می‌دهد؛ **پاک‌کردن برنامه می‌تواند تنظیمات Favorites و تلکس را حذف کند**. ابتدا از تنظیمات خود نسخه پشتیبان بگیرید.
+برای فایل آماده Preview این دستورها را به کار نبرید؛ [راهنمای درست آن](EXPERIMENTAL_APK.md) را بخوانید.
 
-## تنظیم Home پیش‌فرض، با احتیاط
+## ۴. تغییر Home و بازگشت
 
-اول در Android TV به `Settings → Apps → Default apps → Home app` یا صفحه انتخاب Home بروید. CleanYourTV را انتخاب کنید. نام منو در همه TVها یکسان نیست.
+ابتدا از تنظیمات برنامه‌های پیش‌فرض، Home را انتخاب کنید. دستور زیر برای نسخه معمولی است:
 
-در صورت لزوم از ADB استفاده کنید:
-
-```bash
-adb shell cmd package query-activities --brief -a android.intent.action.MAIN -c android.intent.category.HOME
+```sh
 adb shell cmd package set-home-activity com.gathin.tvhome/.MainActivity
-adb shell cmd package resolve-activity --brief -a android.intent.action.MAIN -c android.intent.category.HOME
 ```
 
-**حتماً با دکمه فیزیکی Home ریموت تست کنید.** پیام `Success` به‌تنهایی تضمین نیست. بعضی Xiaomi/Google TVها همچنان لانچر اصلی را باز می‌کنند.
+با Home فیزیکی ریموت تست کنید. برای بازگشت، Home قبلی را در تنظیمات انتخاب کنید یا مؤلفه ثبت‌شده را در دستور زیر قرار دهید:
 
-**هیچ بسته سیستمی را صرفاً برای نصب این لانچر غیرفعال نکنید.** اگر پس از بررسی دقیق Firmware تصمیم به غیرفعال‌کردن لانچر کارخانه گرفته‌اید، روش بازگشت را از قبل آماده کنید. مخزن اصلی خطرات مدل‌های مختلف را در `docs/TROUBLESHOOTING.md` تشریح کرده است.
-
-## بازیابی Google TV
-
-اگر Android TV اصلی شما از `com.google.android.tvlauncher` استفاده می‌کند:
-
-```bash
-adb shell pm enable --user 0 com.google.android.tvlauncher
-adb shell cmd package set-home-activity <RECORDED_STOCK_HOME_COMPONENT>
+```sh
+adb shell cmd package set-home-activity <RECORDED_HOME_COMPONENT>
 adb shell input keyevent KEYCODE_HOME
 ```
 
-در بعضی Firmwareها نام بسته کارخانه متفاوت است؛ پیش از هر اقدامی نام واقعی آن را ثبت کنید. لانچر کارخانه را هرگز Uninstall نکنید. اگر صفحه Home باز نمی‌شود ولی ADB وصل است، این دستور معمولاً راه بازگشت است.
+لانچر کارخانه را حذف یا صرفاً برای نصب این برنامه غیرفعال نکنید. اگر قبلاً غیرفعال شده، با نام بسته واقعی دستگاه و دستور `adb shell pm enable --user 0 <STOCK_HOME_PACKAGE>` آن را فعال کنید؛ جای‌نگهدارها باید پیش از اجرا جایگزین شوند.
 
-## هشدارهای سازگاری
+## نکات مهم
 
-- استفاده قبلی روی **Mi Box 4 / Android TV 9** توسط مالک گزارش شده؛ این commit تست دستگاه نشده؛ عملکرد سایر مدل‌ها هنوز تأیید نشده است.
-- برای اتصال به منابع RSS، اینترنت مستقیم یا مسیری که با قوانین و تنظیمات شبکه خودتان سازگار است لازم است.
-- دکمه‌های ریموت با ماوس فرق دارند؛ کنترل اصلی با جهت‌ها، OK و Back انجام می‌شود.
-- VPN یا برنامه‌های کاربر نباید به‌صورت خودکار حذف یا متوقف شوند.
-
-Record the actual stock HOME component before switching: `adb shell cmd package resolve-activity --brief -a android.intent.action.MAIN -c android.intent.category.HOME`. Google TV often uses `com.google.android.apps.tv.launcherx`; do not guess its activity class. Replace placeholders before running commands. After testing, turn off debugging, revoke authorizations, and reboot. Local debug keys differ between computers; they cannot necessarily update the existing Mac installation. No built-in settings export is verified; record preferences manually.
+- Android 8 به بالا حداقل تعیین‌شده در سورس است؛ عملکرد همه مدل‌ها تأیید نشده است.
+- خطای `INSTALL_FAILED_UPDATE_INCOMPATIBLE` معمولاً یعنی امضای فایل جدید و نسخه موجود متفاوت است. بدون بررسی و ثبت تنظیمات، برنامه قبلی را پاک نکنید. قابلیت خروجی‌گرفتن از تنظیمات این نسخه تأیید نشده است.
+- دسترسی Location، تنظیمات امن یا سرویس دسترس‌پذیری برای نصب پایه لازم نیست.
+- پس از پایان کار، اشکال‌زدایی را خاموش، اعتمادهای ADB را لغو و دستگاه را راه‌اندازی مجدد کنید.
