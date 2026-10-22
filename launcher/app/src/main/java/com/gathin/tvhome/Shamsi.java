@@ -16,11 +16,44 @@ final class Shamsi {
     private Shamsi() {
     }
 
-    /** e.g. "27 Mehr 1405" */
+
+    private static final String[] FA_MONTHS = {
+        "فروردین", "اردیبهشت", "خرداد", "تیر",
+        "مرداد", "شهریور", "مهر", "آبان",
+        "آذر", "دی", "بهمن", "اسفند"
+    };
+
+    private static final String[] FA_DAYS = {
+        "یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه",
+        "پنجشنبه", "جمعه", "شنبه"
+    };
+
+    private static String persianDigits(String input) {
+        String en = "0123456789";
+        String fa = "۰۱۲۳۴۵۶۷۸۹";
+        StringBuilder out = new StringBuilder();
+        for (char c : input.toCharArray()) {
+            int i = en.indexOf(c);
+            out.append(i < 0 ? c : fa.charAt(i));
+        }
+        return out.toString();
+    }
+
     static String today(Resources res) {
         Calendar c = Calendar.getInstance();
-        int[] j = toJalali(c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH));
-        return j[2] + " " + res.getString(MONTHS[j[1] - 1]) + " " + j[0];
+        int[] j = toJalali(
+            c.get(Calendar.YEAR),
+            c.get(Calendar.MONTH) + 1,
+            c.get(Calendar.DAY_OF_MONTH)
+        );
+
+        String result =
+            FA_DAYS[c.get(Calendar.DAY_OF_WEEK) - 1] + " " +
+            j[2] + " " +
+            FA_MONTHS[j[1] - 1] + " " +
+            j[0];
+
+        return persianDigits(result);
     }
 
     /** Gregorian to Jalali, the 33-year-cycle algorithm used by jalaali-js. Returns {year, month, day}. */

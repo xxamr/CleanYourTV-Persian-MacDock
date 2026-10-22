@@ -200,7 +200,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:format12Hour="h:mm"
-                        android:format24Hour="HH:mm"
+                        android:format24Hour="h:mm"
                         android:textColor="#FFFFFFFF"
                         android:textSize="52sp"
                         android:fontFamily="@string/font_light"
@@ -215,7 +215,7 @@
                         android:layout_gravity="bottom"
                         android:layout_marginBottom="8dp"
                         android:format12Hour="a"
-                        android:format24Hour=""
+                        android:format24Hour="a"
                         android:textColor="#B3FFFFFF"
                         android:textSize="15sp"
                         android:fontFamily="@string/font_medium"
@@ -335,6 +335,22 @@
                     android:visibility="gone"
                     android:contentDescription="@string/app_library"
                     android:drawableStart="@drawable/ic_apps"
+                    android:nextFocusDown="@+id/grid" />
+
+                <!-- Instant fullscreen Persian clock screensaver. -->
+                <TextView
+                    android:id="@+id/btnClockCustom"
+                    style="@style/TopButtonIcon"
+                    android:contentDescription="Clock screensaver"
+                    android:drawableStart="@drawable/ic_clock_custom"
+                    android:nextFocusDown="@+id/grid" />
+
+                <!-- Persian RSS ticker source settings, controllable with the remote. -->
+                <TextView
+                    android:id="@+id/btnNewsTicker"
+                    style="@style/TopButtonIcon"
+                    android:contentDescription="منابع تلکس خبری"
+                    android:drawableStart="@drawable/ic_news_ticker"
                     android:nextFocusDown="@+id/grid" />
 
                 <TextView

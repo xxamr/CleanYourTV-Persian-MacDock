@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:format12Hour="h:mm"
-                android:format24Hour="HH:mm"
+                android:format24Hour="h:mm"
                 android:textColor="#E6FFFFFF"
                 android:textSize="120sp"
                 android:fontFamily="@string/font_extralight"
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:format12Hour="a"
-                android:format24Hour=""
+                android:format24Hour="a"
                 android:textColor="#99FFFFFF"
                 android:textSize="22sp"
                 android:fontFamily="@string/font_medium"
@@ -46,13 +46,11 @@
                 android:textAllCaps="true" />
         </LinearLayout>
 
-        <TextClock
+        <TextView android:id="@+id/dreamPersianDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:layout_marginTop="4dp"
-            android:format12Hour="@string/date_format"
-            android:format24Hour="@string/date_format"
             android:textColor="#8CFFFFFF"
             android:textSize="18sp"
             android:fontFamily="@string/font_regular"

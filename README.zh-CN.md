@@ -1,3 +1,5 @@
+> **Upstream documentation snapshot.** This is not the installation or privacy contract for this fork. See [README](README.md) and [fork privacy notes](docs/PRIVACY_AND_RSS.md).
+
 <p align="center">
   <a href="https://cleanyour.tv"><img src="docs/banner.png" alt="CleanYourTV：让电视桌面回归简洁" width="800"></a>
 </p>

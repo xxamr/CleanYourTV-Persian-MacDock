@@ -190,8 +190,6 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private int docked, emptySlots;
     /** Never shown as tiles (res/values/config.xml, hidden_apps). */
     private final Set<String> hidden;
-    /** Apps pre-seeded into the App library's "added" set (config.xml library_apps); empty by default. */
-    private final Set<String> libraryPreload;
     private final boolean animations;
     private final boolean advancedEffects;
     private final boolean showLibrary;
@@ -217,7 +215,6 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.favourites = cfg.dockApps;
         this.fillDock = cfg.fillDock;
         this.hidden = new HashSet<>(cfg.hiddenApps);
-        this.libraryPreload = new HashSet<>(cfg.libraryApps);
         this.animations = cfg.animations;
         this.advancedEffects = cfg.animations && cfg.advancedEffects;
         this.showHomeSettings = cfg.showHomeSettingsShortcut;
@@ -250,9 +247,7 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         Set<String> tvPackages = new HashSet<>();
         for (ResolveInfo ri : found) if (ri.activityInfo != null) tvPackages.add(ri.activityInfo.packageName);
         leanbackPackages = tvPackages;
-        // Copy before merging: LibraryApps.load() may return an immutable empty set (#419).
-        Set<String> added = new HashSet<>(LibraryApps.load(ctx));
-        added.addAll(libraryPreload);
+        Set<String> added = LibraryApps.load(ctx);
         Set<String> removed = LibraryApps.loadRemoved(ctx);
         if (!added.isEmpty()) {
             Set<String> seen = new HashSet<>(tvPackages);
@@ -428,8 +423,8 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         h.name.setVisibility(dockRow && position < dockSize && restNameAlpha == 0f ? View.INVISIBLE : View.VISIBLE);
         boolean focused = h.card.isFocused();   // a rebind after reload() can hit the focused tile
         h.name.setAlpha(focused ? 1f : restNameAlpha);
-        h.card.setScaleX(focused && animations ? focusScale() : 1f);
-        h.card.setScaleY(focused && animations ? focusScale() : 1f);
+        h.card.setScaleX(focused && animations ? focusScale(position) : 1f);
+        h.card.setScaleY(focused && animations ? focusScale(position) : 1f);
         h.card.setTranslationY(focused && advancedEffects ? -4f * ctx.getResources().getDisplayMetrics().density : 0f);
         h.card.setTranslationZ(focused && advancedEffects ? 8f * ctx.getResources().getDisplayMetrics().density : 0f);
         h.banner.setScaleX(focused && advancedEffects ? 1.035f : 1f);
@@ -611,8 +606,12 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return e.banner != null ? e.banner : e.icon;
     }
 
-    float focusScale() {
-        return !animations ? 1f : advancedEffects ? 1.12f : 1.10f;
+    float focusScale(int position) {
+        if (!animations) return 1f;
+        if (dockRow && position >= 0 && position < dockSize) {
+            return 1.50f;
+        }
+        return advancedEffects ? 1.12f : 1.10f;
     }
 
     /** A vivid colour sampled from the app's banner (or icon), cached per entry; a card's accent when it set one. */
@@ -725,7 +724,10 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 view.animate().cancel();
                 banner.animate().cancel();
                 name.animate().cancel();
-                float scale = !animations ? 1f : advancedEffects ? 1.12f : 1.10f;
+                int focusPos = getBindingAdapterPosition();
+                float scale = !animations ? 1f :
+                        focusPos >= 0 && focusPos < MainActivity.COLUMNS ? 1.50f :
+                        advancedEffects ? 1.12f : 1.10f;
                 float s = focused ? scale : 1f;
                 if (!animations) {
                     view.setScaleX(1f);

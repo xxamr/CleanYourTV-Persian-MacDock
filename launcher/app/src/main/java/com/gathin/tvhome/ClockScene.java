@@ -5,6 +5,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.Random;
 
@@ -25,6 +26,7 @@ final class ClockScene {
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final Random random = new Random();
     private final View content;
+    private final TextView persianDate;
     private final GradientDrawable glow;
     private int colorIndex;
     private int glowColor;
@@ -32,6 +34,7 @@ final class ClockScene {
     private final Runnable tick = new Runnable() {
         @Override
         public void run() {
+            updatePersianDate();
             moveClock();
             shiftGlow();
             handler.postDelayed(this, MOVE_MS);
@@ -41,6 +44,7 @@ final class ClockScene {
     /** root is the inflated dream_clock layout. */
     ClockScene(View root) {
         content = root.findViewById(R.id.dreamContent);
+        persianDate = root.findViewById(R.id.dreamPersianDate);
         View ambient = root.findViewById(R.id.dreamAmbient);
         glow = new GradientDrawable();
         glow.setGradientType(GradientDrawable.RADIAL_GRADIENT);
@@ -51,7 +55,12 @@ final class ClockScene {
         setGlow(PALETTE[colorIndex]);
     }
 
+    private void updatePersianDate() {
+        persianDate.setText(Shamsi.today(persianDate.getResources()));
+    }
+
     void start() {
+        updatePersianDate();
         content.setAlpha(0f);
         content.post(() -> {
             placeClock();

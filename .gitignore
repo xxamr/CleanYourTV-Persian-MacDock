@@ -19,3 +19,31 @@ traces/
 *.aab
 launcher/hs_err_pid*.log
 launcher/replay_pid*.log
+
+# Local/private build artifacts
+**/build/
+**/.gradle/
+local.properties
+.env*
+*.jks
+*.keystore
+*.p12
+*.pem
+*.key
+*.apk
+*.aab
+*.log
+.DS_Store
+
+# Private signing and local build artifacts
+*.p12
+*.pem
+*.key
+*.apk
+*.aab
+*.log
+*.db
+*.before-*
+**/build/
+**/.gradle/
+**/local.properties

@@ -95,6 +95,8 @@ import java.util.Set;
  */
 public class MainActivity extends Activity implements AppAdapter.TileListener {
 
+    private FloatingDock customDock;
+    private NewsTicker newsTicker;
     private static final int LAUNCHER_SETTINGS_REQUEST = 42;
     /** Sent by QuickSettingsActivity: open Launcher settings from here so Home rebuilds when they close. */
     static final String ACTION_LAUNCHER_SETTINGS = "com.gathin.tvhome.action.LAUNCHER_SETTINGS";
@@ -111,8 +113,6 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
      */
     private static final long TIME_VALID_AFTER_MS = 1_735_689_600_000L;
     private String liveTvPkg;
-    /** Launcher settings' change count this Home was built with (see onResume). */
-    private long settingsRevision;
     /** Idle time on Home before ClockActivity; 0 is off (config.xml, home_idle_clock_minutes). */
     private long idleClockMs;
     private final Runnable showIdleClock = () -> startActivity(new Intent(this, ClockActivity.class));
@@ -120,8 +120,6 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     private String liveTvInputId;
     /** The app library is on (config.xml, app_library): only then can the tile menu take an app off Home. */
     private boolean appLibraryEnabled;
-    /** The same opt-in menu is available from either hold-OK or the remote's Menu key. */
-    private boolean tileMenuEnabled;
     private String inputAction;
     private String inputUriScheme;
     private String sourcePanelService;
@@ -351,7 +349,6 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         // restore_key_services: after a force stop, put back the remote's accessibility helpers that Android took
         // off the list (needs WRITE_SECURE_SETTINGS, granted by build-and-install with RESTORE_KEY_SERVICES=1).
         if (cfg.restoreKeyServices) ServiceRepair.restore(this);
-        settingsRevision = settingsRevision();
         applyViewInputsHandler(cfg.handleViewInputs);
         settingsKeycodes = cfg.settingsKeycodes;
         settingsKeyPanel = cfg.settingsKeyPanel;
@@ -369,7 +366,6 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         liveTvAction = cfg.liveTvAction;
         liveTvInputId = cfg.liveTvInputId;
         appLibraryEnabled = cfg.appLibrary;
-        tileMenuEnabled = cfg.tileMenu;
         inputAction = cfg.inputAction;
         inputUriScheme = cfg.inputUriScheme;
         sourcePanelService = cfg.sourcePanelService;
@@ -378,6 +374,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         coocaaSources = cfg.coocaaSources;
 
         root = findViewById(R.id.root);
+        newsTicker = new NewsTicker(this, root);
         root.setBackgroundColor(cfg.backgroundColor);
         // root fills the window with an opaque colour (Config keeps background_color opaque), so the window's own
         // black under it is a second full-screen fill on every frame for nothing. The starting window still uses
@@ -500,7 +497,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             public void onChildViewDetachedFromWindow(@NonNull View v) {
             }
         });
-        if (dockRow) grid.addItemDecoration(new DockDecoration(COLUMNS, density, cinematic, cfg.alwaysShowNames, cfg.dockOpacity, cfg.dockGlass, cfg.dockEvenPadding));
+        if (dockRow) grid.addItemDecoration(new DockDecoration(COLUMNS, density, cinematic, cfg.alwaysShowNames, cfg.dockOpacity, cfg.dockGlass));
         // Reduced motion: the tiles are simply there, with no entrance (reloadApps skips it there too).
         if (animations && !reducedMotion) {
             grid.setLayoutAnimation(new LayoutAnimationController(
@@ -512,6 +509,16 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         Order savedOrder = Order.load(Order.file(this));
         adapter.setSavedOrder(Order.ranks(savedOrder, dockApps), Order.docked(savedOrder, dockApps));
         grid.setAdapter(adapter);
+        customDock = new FloatingDock(this, root);
+        // The native RecyclerView must keep its layout for legacy lifecycle logic,
+        // but the user interacts only with the independently focusable macOS dock.
+        grid.setVisibility(View.INVISIBLE);
+        grid.setFocusable(false);
+        grid.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+        glass.setVisibility(View.INVISIBLE);
+        hero.setVisibility(View.INVISIBLE);
+        heroArt.setVisibility(View.INVISIBLE);
+        findViewById(R.id.heroScrim).setVisibility(View.INVISIBLE);
 
         // tvOS layout: push the dock row towards the bottom of the screen, leaving room for
         // rows_below_dock grid rows under it; the rest of the grid stays below until you press Down.
@@ -606,6 +613,10 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             libraryFromTopBar = true;   // closing it goes back to this button, not to the pill after the last row
         });
         btnLibraryTop.setVisibility(cfg.libraryButton && cfg.appLibrary ? View.VISIBLE : View.GONE);
+        View btnNewsTicker = findViewById(R.id.btnNewsTicker);
+        btnNewsTicker.setOnClickListener(v -> newsTicker.showSourcesDialog());
+        View btnClockCustom = findViewById(R.id.btnClockCustom);
+        btnClockCustom.setOnClickListener(v -> startActivity(new Intent(this, ClockActivity.class)));
         iconOnlyButtons = cfg.iconOnlyButtons;
         topMenu = cfg.topMenu;
         wifiIconOnly = iconOnlyButtons && cfg.wifiLabelWidth <= 0;
@@ -632,7 +643,6 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             else makeIconOnly(btnWifi);
             makeIconOnly((TextView) btnSettings);
         }
-        if (cfg.iconOnlyInputs) makeIconOnly((TextView) btnInputs);
         btnSettings.setOnLongClickListener(v -> {
             showSettingsMenu();
             return true;
@@ -645,8 +655,10 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             if (event.getAction() != KeyEvent.ACTION_DOWN) return false;
             if (keyCode == KeyEvent.KEYCODE_DPAD_UP) return true;
             if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
-                // Back to the dock tile Up came from, not wherever the focus finder lands.
-                focusTile(lastFocused % COLUMNS);
+                if (focusNewsTicker()) return true;
+                // The legacy grid is hidden in this custom build. Focus the floating dock.
+                if (customDock != null) customDock.restoreFocus();
+                else focusTile(lastFocused % COLUMNS);
                 return true;
             }
             int firstButton = btnInputs.getVisibility() == View.VISIBLE ? R.id.btnInputs : firstTopButton().getId();
@@ -660,8 +672,10 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         btnSettings.setOnKeyListener(pillKeys);
         btnReorder.setOnKeyListener(pillKeys);
         btnLibraryTop.setOnKeyListener(pillKeys);
+        btnClockCustom.setOnKeyListener(pillKeys);
+        btnNewsTicker.setOnKeyListener(pillKeys);
         if (advancedEffects) {
-            for (View button : new View[]{btnInputs, btnWifi, btnReorder, btnLibraryTop, btnSettings}) {
+            for (View button : new View[]{btnInputs, btnWifi, btnReorder, btnLibraryTop, btnClockCustom, btnNewsTicker, btnSettings}) {
                 button.setOnFocusChangeListener((view, focused) -> view.animate()
                         .scaleX(focused ? 1.04f : 1f).scaleY(focused ? 1.04f : 1f)
                         .setDuration(reducedMotion ? Motion.REDUCED_MS : 160).start());
@@ -772,6 +786,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             // Still on screen (the quick panel was over it, or Home was already in front): the tiles are current,
             // so only go back to the first one; rebuilding would replay the entrance animation for nothing.
             grid.post(() -> focusTile(0));
+            if (customDock != null) root.post(() -> customDock.restoreFocus());
         }
     }
 
@@ -792,15 +807,9 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     @Override
     protected void onResume() {
         super.onResume();
+        if (newsTicker != null) newsTicker.onResume();
         // A festival that started or ended while Home was in the background: rebuild with or without it.
         if (festive != festival.active(LocalDate.now())) {
-            recreate();
-            return;
-        }
-        // Something changed in Launcher settings: rebuild with it, however the settings were left. Only Back
-        // delivered their RESULT_OK; Home (the remote's button) clears them off this task and the result comes
-        // back cancelled, so a new wallpaper or layout waited for the next process start.
-        if (Config.settingsChanged(settingsRevision, settingsRevision())) {
             recreate();
             return;
         }
@@ -838,6 +847,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         sky.update();
         wallpaperPlayer.start();
         handler.postDelayed(minuteTick, MINUTE_MS);
+        if (customDock != null) root.post(() -> customDock.restoreFocus());
         if (festive && diya != null) {
             diya.start();
             LocalDate today = LocalDate.now();
@@ -848,24 +858,16 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         }
     }
 
-    /** Launcher settings' change count (Config.SETTINGS_REVISION_KEY); onResume rebuilds Home when it moved. */
-    private long settingsRevision() {
-        return getSharedPreferences(Config.SETTINGS_NAME, MODE_PRIVATE).getLong(Config.SETTINGS_REVISION_KEY, 0);
-    }
-
-    /**
-     * Only "Reorder tiles" in Launcher settings still answers with a result: Home rebuilds (the saved choices are
-     * reloaded) and then enters reorder mode. Every other change is picked up in onResume through the change count.
-     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == LAUNCHER_SETTINGS_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getBooleanExtra(LauncherSettingsActivity.EXTRA_REORDER, false)) {
-            getIntent().putExtra(LauncherSettingsActivity.EXTRA_REORDER, true);
-            // The old activity must not consume the pending action, or rebuild a second time in onResume.
+        if (requestCode == LAUNCHER_SETTINGS_REQUEST && resultCode == RESULT_OK) {
+            if (data != null && data.getBooleanExtra(LauncherSettingsActivity.EXTRA_REORDER, false)) {
+                getIntent().putExtra(LauncherSettingsActivity.EXTRA_REORDER, true);
+            }
+            // The old activity must not consume the pending action while recreation is queued.
             settingsRecreationPending = true;
-            settingsRevision = settingsRevision();
+            // Reload saved layout choices before entering the existing Home reorder mode.
             recreate();
         }
     }
@@ -1002,6 +1004,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
 
     @Override
     protected void onPause() {
+        if (newsTicker != null) newsTicker.onPause();
         super.onPause();
         root.removeCallbacks(showIdleClock);
         endReorder();   // Home or another app while reordering keeps the order so far
@@ -1065,6 +1068,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
 
     @Override
     protected void onDestroy() {
+        if (newsTicker != null) newsTicker.destroy();
         super.onDestroy();
         unregisterReceiver(packageReceiver);
         wallpaperPlayer.close();
@@ -1110,17 +1114,6 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (handleSettingsKey(event)) return true;
-        if (tileMenuEnabled && !reordering && openPopup == null && cardPrompt == null
-                && event.getKeyCode() == KeyEvent.KEYCODE_MENU) {
-            int position = focusedTilePosition();
-            if (position >= 0 && position < adapter.appCount()
-                    && !getPackageName().equals(adapter.packageAt(position))) {
-                if (event.getAction() == KeyEvent.ACTION_UP && !event.isCanceled()) {
-                    onTileLongPress(position, getCurrentFocus());
-                }
-                return true;
-            }
-        }
         if (!reordering) return super.dispatchKeyEvent(event);
         if (dockEditing) return dispatchDockEdit(event);
         boolean down = event.getAction() == KeyEvent.ACTION_DOWN;
@@ -1418,6 +1411,15 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         });
     }
 
+    // NEWS_TICKER_INTERACTIVE_V2: DPAD access from toolbar and floating Dock.
+    boolean focusNewsTicker() {
+        return newsTicker != null && newsTicker.focusTicker();
+    }
+
+    void restoreDockFocusForNews() {
+        if (customDock != null) customDock.restoreFocus();
+    }
+
     @Override
     public void onBackPressed() {
         // Home screen: Back goes nowhere.
@@ -1465,7 +1467,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         r.set(0, 0, card.getWidth(), card.getHeight());
         root.offsetDescendantRectToMyCoords(card, r);
         float pad = 6f * density;        // matches GlassView's glow inset
-        float scale = adapter.focusScale();
+        float scale = adapter.focusScale(position);
         float w = card.getWidth() * scale + 2 * pad;
         float h = card.getHeight() * scale + 2 * pad;
         float x = r.exactCenterX() - w / 2f;
@@ -1537,7 +1539,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         View card = vh == null ? null : vh.itemView.findViewById(R.id.card);
         if (card == null || card.getWidth() <= 0 || !card.isFocused()) return;
         float pad = 6f * density;
-        float scale = adapter.focusScale();
+        float scale = adapter.focusScale(lastFocused);
         int w = (int) (card.getWidth() * scale + 2 * pad);
         int h = (int) (card.getHeight() * scale + 2 * pad);
         if (!glassShown || card.getWidth() != glassCardW || glass.getWidth() != w || glass.getHeight() != h) {

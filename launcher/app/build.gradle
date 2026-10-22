@@ -15,14 +15,28 @@ android {
         versionName '2.6'
     }
 
+    // Secrets come only from the local environment, never from committed files.
+    def releaseVars = ['CTV_KEYSTORE', 'CTV_STORE_PASSWORD', 'CTV_KEY_ALIAS', 'CTV_KEY_PASSWORD']
+    def releaseSigningReady = releaseVars.every { System.getenv(it) }
+    signingConfigs {
+        if (releaseSigningReady) {
+            publicRelease {
+                storeFile file(System.getenv('CTV_KEYSTORE'))
+                storePassword System.getenv('CTV_STORE_PASSWORD')
+                keyAlias System.getenv('CTV_KEY_ALIAS')
+                keyPassword System.getenv('CTV_KEY_PASSWORD')
+            }
+        }
+    }
+
     buildTypes {
         release {
             // R8 strips and optimises the code (AndroidX included): smaller APK, faster start on a slow TV CPU.
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            // Sideloaded over ADB, never published: sign with the debug key so it installs over a debug build.
-            signingConfig signingConfigs.debug
+            // Without all four variables assembleRelease is deliberately UNSIGNED.
+            if (releaseSigningReady) signingConfig signingConfigs.publicRelease
         }
     }
 
