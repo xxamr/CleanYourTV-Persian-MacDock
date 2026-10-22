@@ -13,11 +13,11 @@
 
 ## بازیابی لانچر کارخانه
 
-مثال Google TV:
+از نام بسته و component واقعی که پیش از تغییر Home ثبت کردید استفاده کنید؛ نام Google TV معمولاً `com.google.android.apps.tv.launcherx` است و با Android TV فرق دارد:
 
 ```bash
-adb shell pm enable --user 0 com.google.android.tvlauncher
-adb shell cmd package set-home-activity com.google.android.tvlauncher/.MainActivity
+adb shell pm enable --user 0 <STOCK_HOME_PACKAGE>
+adb shell cmd package set-home-activity <RECORDED_STOCK_HOME_COMPONENT>
 adb shell input keyevent KEYCODE_HOME
 ```
 
@@ -31,7 +31,7 @@ adb shell dumpsys meminfo com.gathin.tvhome
 adb logcat -d -s AndroidRuntime:E
 ```
 
-قبل از ثبت Issue، اطلاعات خصوصی را از Log پاک کنید. Build آخرین نسخه را با `./gradlew assembleRelease` بازتولید کنید. اگر Home بالا نمی‌آید ابتدا لانچر کارخانه را بازیابی کنید.
+قبل از ثبت Issue، اطلاعات خصوصی را از Log پاک کنید. Build آخرین نسخه را با `./gradlew assembleDebug` بازتولید کنید. اگر Home بالا نمی‌آید ابتدا لانچر کارخانه را بازیابی کنید.
 
 ## تیترهای خبری نمایش داده نمی‌شوند
 

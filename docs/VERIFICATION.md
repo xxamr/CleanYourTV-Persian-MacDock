@@ -18,3 +18,7 @@ Before Stable: create/back up a dedicated signing key, verify build/certificate/
 Initial run: 429 tests, 13 failures, 5 errors, 3 skips. Most failures assume the upstream marketing README and workflows/size gate, which this fork intentionally replaces; they are not a passing fork CI claim. A genuine missing Hebrew-layout Clock/News button regression was found and fixed to prevent null lookups. The inherited full Python suite has not been adapted wholesale to the fork's documentation. Android CI is the publication build gate.
 
 CI first attempt failed before compilation because setup-android requested the removed SDK package `tools`. The workflow now supplies explicit platform/build-tools packages and pins Ubuntu 24.04; it uses current checkout/setup-java major versions. Hebrew view-ID parity and Markdown links passed after fixes (6 checks total).
+
+## Successful hosted Android verification
+
+[GitHub Actions run 39852363967](https://github.com/xxamr/CleanYourTV-Persian-MacDock/actions/runs/39852363967) completed successfully on code commit eecfe04386bc9b1d9d74f164647098579f7b58c0: Java 17, API 34/build tools 34.0.0, testReleaseUnitTest, lintRelease and assembleRelease. No APK artifact was uploaded. This supersedes the local network blocker for build verification, but does not establish TV installation/update/rollback. Subsequent documentation-only commits do not change the verified launcher or build configuration.

@@ -2,7 +2,7 @@
 
 ## Unreleased — community edition
 
-- Persian Shamsi day/month/date presentation and English 12-hour time.
+- Persian Shamsi day/month/date presentation and 12-hour time (locale-dependent display).
 - Persian date in drifting screensaver, with direct Clock shortcut.
 - Floating macOS-inspired dock with per-icon magnification, neighbor scaling and idle collapse.
 - On-TV Dock favorites selection/reordering and fullscreen Launchpad.

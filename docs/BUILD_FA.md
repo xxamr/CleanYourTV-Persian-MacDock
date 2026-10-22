@@ -42,3 +42,5 @@ Workflow `Build verification` در `.github/workflows/build.yml` فقط صحت �
 ## درباره macOS Catalina
 
 Homebrew ممکن است از macOS قدیمی پشتیبانی نکند. می‌توان Android SDK Command-line Tools و JDK 17 را به‌صورت دستی نصب کرد. مقدارهای `JAVA_HOME` و `ANDROID_HOME` برای هر سیستم باید با مسیر واقعی همان سیستم جایگزین شوند؛ مسیر کامپیوتر توسعه‌دهنده نباید داخل مخزن ذخیره شود.
+
+برای دستورهای کامل Windows PowerShell و جزئیات سازگاری Catalina، [BUILD_EN](BUILD_EN.md) را ببینید. دستورات نصب را از ریشه مخزن اجرا کنید؛ اگر داخل launcher هستید ابتدا به پوشه والد برگردید. installer قدیمی upstream به مسیر Release امضاشده متکی است؛ در این پیش‌نمایش از روش دستی Debug و ADB استفاده کنید.
