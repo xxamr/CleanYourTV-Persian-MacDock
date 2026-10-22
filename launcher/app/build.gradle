@@ -30,6 +30,13 @@ android {
     }
 
     buildTypes {
+        // Explicit experimental channel: isolated from the owner's installed launcher.
+        preview {
+            initWith debug
+            applicationIdSuffix '.preview'
+            versionNameSuffix '-experimental'
+            matchingFallbacks = ['debug']
+        }
         release {
             // R8 strips and optimises the code (AndroidX included): smaller APK, faster start on a slow TV CPU.
             minifyEnabled true

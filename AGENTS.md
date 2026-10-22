@@ -2,7 +2,7 @@
 
 This is an unofficial community fork. The instructions below describe upstream contribution policy.
 For this fork, the owner authorizes the custom launcher, RSS INTERNET permission, and build-verification workflow.
-Do not add hidden recording, credentials, APK artifacts or automatic binary publishing. Release signing defaults to unsigned.
+The owner subsequently authorized a manually dispatched experimental APK channel with a separate package ID and explicit temporary debug-signing disclosure. No Stable binary publishing, hidden recording or private signing material is authorized. Release signing defaults to unsigned.
 Run relevant checks and report blocked checks honestly. Upstream TV safety guards remain applicable.
 
 # AGENTS.md

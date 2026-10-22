@@ -8,9 +8,9 @@
 
 ## Status / وضعیت انتشار
 
-**Source preview — no downloadable APK and no Stable Release.** The attached source snapshot is authoritative; no APK was included, so APK/source correspondence cannot be verified. Local Android build was blocked by network access to Gradle; see [verification](docs/VERIFICATION.md). Device behavior remains unverified in this publication session. Prior Mi Box 4 use is owner-reported, not a test of this exact published commit.
+**Experimental channel available; no Stable Release.** See [experimental APK installation and signing limits](docs/EXPERIMENTAL_APK.md) and the [Releases page](https://github.com/xxamr/CleanYourTV-Persian-MacDock/releases). The original source-preview release has no APK. The attached source snapshot is authoritative; no APK was included, so APK/source correspondence cannot be verified. Local Android build was blocked by network access to Gradle; see [verification](docs/VERIFICATION.md). Device behavior remains unverified in this publication session. Prior Mi Box 4 use is owner-reported, not a test of this exact published commit.
 
-**پیش‌نمایش سورس؛ APK عمومی موجود نیست.** نصب، آپدیت و بازگشت این commit روی TV هنوز تأیید نشده است.
+**APK آزمایشی از بخش Releases؛ نسخه Stable موجود نیست.** نصب، آپدیت و بازگشت این commit روی TV هنوز تأیید نشده است.
 
 ## Features / امکانات
 
@@ -29,7 +29,9 @@ Screenshots of the actual custom build will be added after verifying they do not
 
 ## Install / نصب آسان
 
-**Recommended for non-developers:** open [Releases](https://github.com/xxamr/CleanYourTV-Persian-MacDock/releases), download a **verified, properly signed APK** if available, and follow [راهنمای نصب فارسی](docs/INSTALL_FA.md). **If no release is published yet, build from source** using [BUILD_FA](docs/BUILD_FA.md).
+**Experimental APK:** read [EXPERIMENTAL_APK](docs/EXPERIMENTAL_APK.md) first; its separate package and temporary signing have different commands and update limits.
+
+**Future Stable installation:** open [Releases](https://github.com/xxamr/CleanYourTV-Persian-MacDock/releases), download a **verified, properly signed APK** if available, and follow [راهنمای نصب فارسی](docs/INSTALL_FA.md). **If no release is published yet, build from source** using [BUILD_FA](docs/BUILD_FA.md).
 
 **پیش از نصب:** از تنظیمات و لانچر فعلی پشتیبان بگیرید. لانچر سیستمی را حذف نکنید. روی همه برندها و مدل‌ها تست نشده است.
 
