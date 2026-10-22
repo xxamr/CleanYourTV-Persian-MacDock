@@ -20,8 +20,13 @@ These redirection commands are for macOS/Linux; on Windows use Command Prompt ra
 
 Before uploading publicly, inspect Wi-Fi names, account/profile names, notification text, private headlines and device identifiers. A privacy crop/redaction must be disclosed; do not reconstruct the UI with image generation. Prefer 16:9 full Home views with no settings panels. Record whether the final image is the owner's Mac build or the separately packaged CI preview; a photo of one is not installation evidence for the other.
 
-Final reviewed files will go in `docs/screenshots/home-before.png` and `docs/screenshots/home-after.png`, displayed together in README with accurate captions. Neither final file has been supplied yet. The earlier owner photo with overlapping docks is intentionally not used.
+## Published image provenance
+
+- `screenshots/stock-home-reference.webp`: owner-supplied stock Android TV Home reference, original filename Xiaomi-Mi-Box-S-4K-Android-12.webp. It shows a different television from the custom photo. Device/Android version is not independently verified from the filename. Do not describe it as the exact same Mi Box before installation.
+- `screenshots/custom-home-owner.jpg`: owner-supplied photograph IMG_9989.jpg of the custom Home, with a single floating Dock, Persian date and RSS ticker. The exact installed source commit/signing certificate cannot be established from a photograph; it is not a fresh install test of the CI preview.
+
+Images are published as supplied without UI edits or generative reconstruction. No account names, network addresses or device identifiers are visible. The earlier development photo with overlapping docks and device-settings photos are not published. The owner supplied these images for this GitHub comparison; no broader license for third-party imagery is asserted.
 
 ## فارسی
 
-یک تصویر از Home قبلی و یک تصویر از Home نهایی همان باکس بفرستید. از کامپیوتری که از قبل به ADB باکس وصل و مجاز شده می‌توان با دستورهای بالا تصویر گرفت. لازم نیست لانچر اصلی را حذف یا غیرفعال کنید. نام شبکه، حساب، اعلان و شناسه دستگاه نباید در تصویر عمومی دیده شود. مشخص کنید تصویر نهایی از نسخه مک است یا APK آزمایشی CI.
+تصاویر ارسالی مالک در README منتشر شده‌اند. تصویر قبل، نمونه مرجع Android TV و تصویر بعد، عکس Home سفارشی است؛ این دو، تست کنترل‌شده یک تلویزیون و Firmware نیستند. از کامپیوتری که از قبل به ADB باکس وصل و مجاز شده می‌توان با دستورهای بالا تصویر گرفت. لازم نیست لانچر اصلی را حذف یا غیرفعال کنید. نام شبکه، حساب، اعلان و شناسه دستگاه نباید در تصویر عمومی دیده شود. مشخص کنید تصویر نهایی از نسخه مک است یا APK آزمایشی CI.

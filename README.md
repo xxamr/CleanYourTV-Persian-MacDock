@@ -23,11 +23,15 @@
 - **Persian RSS news ticker:** source/topic selection, on/off toggle, configurable by remote, refresh attempted every five minutes while Home is active; left/right to switch items, OK to open the source article in a browser.
 - **Small native Android launcher** that does not require root. Its performance depends on your TV, network and installed apps.
 
-## Before / after — تصاویر قبل و بعد
+## Before / after — قبل و بعد
 
-The comparison awaits genuine images of this Mi Box's original Home and final Persian MacDock Home. The available owner photo shows an intermediate development state with overlapping docks, so it is not presented as the final UI. Upstream screenshots are not screenshots of this fork.
+| Before: stock Android TV reference | After: Persian MacDock on the owner's Mi Box |
+|---|---|
+| ![Stock Android TV Home reference supplied by the owner](docs/screenshots/stock-home-reference.webp) | ![Owner photograph of the custom Persian MacDock Home with RSS ticker](docs/screenshots/custom-home-owner.jpg) |
 
-تصاویر واقعی Home قبلی و Home نهایی پس از دریافت و بررسی حریم خصوصی در همین بخش نمایش داده می‌شوند. [روش ثبت تصاویر](docs/SCREENSHOTS.md)
+**قبل:** نمونه Home پیش‌فرض Android TV · **بعد:** عکس واقعی Home سفارشی روی باکس مالک، با تاریخ شمسی، Dock و تلکس خبری.
+
+Both images were supplied by the owner. The stock image is a reference photographed on a different television; this is a visual comparison, not a controlled same-device/firmware benchmark. The custom photo is not proof that the separately signed CI preview APK was installed. No UI reconstruction or generated mockup was used. [Image provenance](docs/SCREENSHOTS.md)
 
 ## Install / نصب آسان
 
