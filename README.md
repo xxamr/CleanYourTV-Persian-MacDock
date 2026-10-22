@@ -23,11 +23,17 @@
 - **Persian RSS news ticker:** source/topic selection, on/off toggle, configurable by remote, refresh attempted every five minutes while Home is active; left/right to switch items, OK to open the source article in a browser.
 - **Small native Android launcher** that does not require root. Its performance depends on your TV, network and installed apps.
 
-## Screenshots
+## Before / after — تصاویر قبل و بعد
 
-Screenshots of the actual custom build will be added after verifying they do not reveal personal accounts, private messages or network information. Do not publish mockups as screenshots of the final app.
+The comparison awaits genuine images of this Mi Box's original Home and final Persian MacDock Home. The available owner photo shows an intermediate development state with overlapping docks, so it is not presented as the final UI. Upstream screenshots are not screenshots of this fork.
+
+تصاویر واقعی Home قبلی و Home نهایی پس از دریافت و بررسی حریم خصوصی در همین بخش نمایش داده می‌شوند. [روش ثبت تصاویر](docs/SCREENSHOTS.md)
 
 ## Install / نصب آسان
+
+**[Download experimental APK / دانلود APK آزمایشی (1.94 MB)](https://github.com/xxamr/CleanYourTV-Persian-MacDock/releases/download/experimental-27e5fec-1-1/CleanYourTV-experimental.apk)** · [Checksums and build information](https://github.com/xxamr/CleanYourTV-Persian-MacDock/releases/tag/experimental-27e5fec-1-1)
+
+This APK installs as **CleanYourTV Preview** alongside the original launcher. Temporary debug signing; no seamless update or physical-TV validation claim. Use the [preview installation guide](docs/EXPERIMENTAL_APK.md), which has the correct package/activity commands.
 
 **Experimental APK:** read [EXPERIMENTAL_APK](docs/EXPERIMENTAL_APK.md) first; its separate package and temporary signing have different commands and update limits.
 
